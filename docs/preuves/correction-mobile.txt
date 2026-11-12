@@ -1,0 +1,11 @@
+CORRECTION DU 12 NOVEMBRE 2026
+Source : copie réelle de style.css avant modification, puis lecture du fichier corrigé.
+
+AVANT
+@media(max-width:760px){.site-header{padding:22px 24px}.header-note{display:none}main{padding:0 20px;max-width:560px}.intro{padding-top:32px}h1{letter-spacing:-1.5px}.game-layout{grid-template-columns:1fr;gap:18px}.sidebar{grid-row:1}.guide,.little-note{display:none}.composer{padding:23px}.draft{padding:24px 0}.board{padding:22px 20px 0}.board-footer{margin:0 -20px}.page-footer{line-height:1.8;font-size:7px}.game-row{grid-template-columns:25px 1fr 80px}.pegs{gap:12px}}
+
+APRÈS
+@media(max-width:760px){.site-header{padding:22px 24px}.header-note{display:none}main{padding:0 20px;max-width:560px}.intro{padding-top:32px}h1{letter-spacing:-1.5px}.game-layout{grid-template-columns:1fr;gap:18px}.sidebar{grid-row:1}.little-note{display:none}.composer{padding:23px}.draft{padding:24px 0}.board{padding:22px 20px 0}.board-footer{margin:0 -20px}.page-footer{line-height:1.8;font-size:7px}.game-row{grid-template-columns:25px 1fr 80px}.pegs{gap:12px}}
+
+Constat de code : .guide était masqué à une largeur <= 760 px ; il ne l'est plus.
+Cette preuve porte sur le code CSS. Ce n'est pas une capture ni un test visuel de navigateur.
