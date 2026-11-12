@@ -1,0 +1,14 @@
+{
+  "name": "code-secret",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Jeu de déduction de quatre couleurs — rendu pédagogique J1",
+  "scripts": {
+    "test": "node game.test.js",
+    "test:rapport": "node game.test.js --rapport",
+    "check": "node --check game.js && node --check app.js && node --check game.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
