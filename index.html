@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f4ed">
+  <title>Code secret — À vous de décoder.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="./"><span class="brand-symbol" aria-hidden="true">●<br>● ●</span> code secret<span class="brand-dot">.</span></a><span class="header-note">UN PEU DE LOGIQUE. UN PEU D’INSTINCT.</span></header>
+  <main>
+    <section class="intro"><div class="eyebrow"><span></span> LE CLASSIQUE, À VOTRE FAÇON</div><h1>Quatre couleurs.<br>Un secret à percer<span>.</span></h1><p>Observez les indices, affinez votre intuition.<br>Vous avez dix essais pour trouver la bonne combinaison.</p></section>
+    <div class="game-layout">
+      <section class="board card" aria-label="Plateau de jeu">
+        <div class="board-heading"><div><span class="eyebrow">LE CODE À TROUVER</span><div id="secret" class="secret" aria-label="Quatre couleurs cachées"><span>?</span><span>?</span><span>?</span><span>?</span></div></div><button id="new-game" class="reset" type="button"><span aria-hidden="true">↻</span> Nouvelle partie</button></div>
+        <div class="board-labels"><span>VOS PROPOSITIONS</span><span>LES INDICES</span></div>
+        <div id="rows" class="rows"></div>
+        <div class="board-footer"><span class="status-dot"></span><span id="board-status">Le secret est bien gardé. À vous de jouer.</span></div>
+      </section>
+      <aside class="sidebar">
+        <section class="composer card" aria-labelledby="turn-title">
+          <div class="turn-heading"><span class="eyebrow" id="turn-title">À VOUS DE JOUER</span><span class="attempt-counter" id="attempt-counter">ESSAI 01 / 10</span></div>
+          <h2 id="composer-title">Suivez votre intuition.</h2><p id="composer-description">Sélectionnez un emplacement, puis une couleur.</p>
+          <div class="draft" id="draft" role="group" aria-label="Votre proposition"></div>
+          <div class="palette-label">VOTRE PALETTE <span>Les répétitions sont autorisées</span></div>
+          <div id="palette" class="palette" role="group" aria-label="Couleurs disponibles"></div>
+          <p id="message" class="message" role="status" aria-live="polite">Composez votre première combinaison.</p>
+          <button id="submit" class="submit" type="button">Valider la proposition <span aria-hidden="true">↗</span></button>
+        </section>
+        <section class="guide card"><span class="eyebrow">LIRE ENTRE LES COULEURS</span><h2>Chaque indice compte.</h2><div class="legend-row"><span class="legend-peg exact"></span><div><strong>Bien placée</strong><p>La bonne couleur, à la bonne place.</p></div></div><div class="legend-row"><span class="legend-peg misplaced"></span><div><strong>Mal placée</strong><p>La bonne couleur, ailleurs dans le code.</p></div></div><p class="guide-note">Les indices indiquent des quantités, jamais les positions. Une couleur ne compte qu’une seule fois par occurrence.</p></section>
+        <div class="little-note"><span aria-hidden="true">✳</span> Prenez votre temps. Le secret ne bougera pas.</div>
+      </aside>
+    </div>
+    <footer class="page-footer"><span>UN ESPRIT CURIEUX FAIT TOUTE LA DIFFÉRENCE.</span><span>6 couleurs · 4 emplacements · 10 essais</span></footer>
+  </main>
+  <script src="game.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
