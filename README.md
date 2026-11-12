@@ -1,0 +1,85 @@
+# Code secret
+
+Jeu solo de déduction inspiré du Mastermind, réalisé avec Codex pour le cours. Cette première version prépare uniquement le **jalon 1 du 20 novembre 2026 au soir** : le jeu est présent localement, la publication reste à terminer.
+
+- Dépôt GitHub : adresse à renseigner ; aucun dépôt distant configuré au moment de la vérification.
+- Application GitHub Pages : non publiée à ce stade.
+- Version de remise : tag `jalon-1` à créer après les vérifications locales ; il faudra aussi le pousser sur GitHub.
+
+## Règles et source
+
+Référence : [énoncé officiel, édition 2.2, annexe code-couleurs-1.0](https://docs.google.com/document/d/17RUqUnEvIilitiNSY1kbK0QT7vBVcUeAT3L6ONJN8XU/edit). Le programme cache quatre couleurs parmi rouge, bleu, vert, jaune, orange et violet, avec répétitions possibles. La personne dispose de dix essais. Une proposition invalide ne consomme aucun essai. Les indices comptent d’abord les couleurs bien placées, puis les couleurs mal placées parmi les occurrences restantes, sans compter deux fois une occurrence. Quatre bien placées donnent la victoire, même au dixième essai ; sinon le dixième essai termine la partie. Une nouvelle partie efface l’historique et tire un code.
+
+Les [sept règles complètes](docs/sources/regles.md) et le [périmètre du jalon 1](docs/sources/consigne-j1.md) sont conservés dans le projet.
+
+## Commencer
+
+Ouvrez `index.html` dans un navigateur récent. Aucune installation ni aucun serveur ne sont nécessaires. Les polices en ligne sont facultatives : des polices locales prennent le relais sans connexion.
+
+## Jouer
+
+1. Sélectionnez l’un des quatre emplacements, puis une couleur dans la palette. Le prochain emplacement vide est sélectionné automatiquement.
+2. Pour corriger une couleur avant validation, sélectionnez à nouveau son emplacement.
+3. Cliquez sur « Valider la proposition ». Une proposition incomplète est refusée sans consommer d’essai.
+4. Consultez les deux nombres à droite de chaque proposition : pastille pleine pour les couleurs bien placées, cercle vide pour les couleurs mal placées.
+5. Trouvez le code en dix essais. Le bouton « Nouvelle partie » remet le jeu à zéro avec un nouveau tirage aléatoire, qui peut par hasard être identique au précédent.
+
+## Décision prise avec Codex
+
+Le choix retenu avec Codex est de séparer le calcul des règles (`game.js`) de l’interface (`app.js`). Cela permet de vérifier les doublons et la fin de partie avec des codes connus sans dépendre d’un tirage aléatoire à l’écran. La contrepartie est de devoir aussi tester l’interface : un moteur correct ne prouve pas que les boutons et l’affichage fonctionnent.
+
+## Interface JavaScript interne
+
+Cette interface sert actuellement au jeu et aux tests locaux. Sa conformité au contrat commun 0.2 n’est pas établie ; ce travail appartient au jalon 2.
+
+`game.js` expose `CodeSecret` dans le navigateur et `module.exports` avec Node.js.
+
+- `PALETTE` : `['rouge', 'bleu', 'vert', 'jaune', 'orange', 'violet']`.
+- `createGame()` : crée une partie avec quatre couleurs tirées indépendamment, répétitions possibles.
+- `game.submit(['rouge', 'bleu', 'vert', 'jaune'])` : retourne `{ ok, exact, misplaced, state }` si la proposition est valide, sinon `{ ok: false, error }` sans modifier la partie.
+- `game.getState()` : fournit une copie de l’historique, le nombre d’essais, les essais restants et le statut (`playing`, `won`, `lost`). Le code secret est `null` pendant la partie et révélé à la fin.
+- `game.newGame()` : effectue un nouveau tirage et remet l’état à zéro.
+- `score(secret, guess)` : calcule les indices de deux tableaux de quatre couleurs valides, en comptant d’abord les couleurs bien placées puis les occurrences restantes.
+
+La partie reste en mémoire jusqu’à une nouvelle partie ou au rechargement de la page.
+
+## Vérifier les règles
+
+Depuis la racine du projet, avec **Node.js 18 ou plus récent** : `node game.test.js`. Le Node.js 6 fourni par certains anciens logiciels est insuffisant. Avec npm disponible : `npm run check` puis `npm test`. Aucune dépendance à installer.
+
+Les tests couvrent les répétitions, les propositions invalides, la victoire au dixième essai, la défaite après dix propositions, le blocage des parties terminées et la réinitialisation.
+
+| Cas | Résultat attendu | Résultat obtenu le 12 novembre 2026 |
+| --- | --- | --- |
+| Proposition incomplète | Refus, compteur et historique inchangés | Réussi dans les tests du moteur |
+| Secret rouge–rouge–bleu–vert, proposition rouge–bleu–rouge–rouge | 1 bien placée, 2 mal placées | Réussi dans les tests du moteur |
+| Code exact au dixième essai | Victoire, zéro essai restant | Réussi dans les tests du moteur |
+| Dix propositions fausses, puis une proposition supplémentaire | Défaite puis refus sans mutation | Réussi dans les tests du moteur |
+| Nouvelle partie après une fin | Historique vide, dix essais, code caché | Réussi dans les tests du moteur |
+
+Les résultats détaillés et l’environnement figurent dans la [preuve d’exécution](docs/preuves/tests-regles.md), régénérable par `node game.test.js --rapport`. Le code du moteur testé est celui du commit `3e2f7e0`, inchangé depuis ; les tests enrichis sont inclus dans la version de remise.
+
+## Correction expliquée
+
+À une largeur de 760 px ou moins, la règle CSS `.guide,.little-note{display:none}` masquait aussi la légende des indices. L’attendu est de conserver les explications « Bien placée » et « Mal placée » sur petit écran. Le commit `a4438ce` retire `.guide` de cette règle. Voir la [preuve de code avant/après](docs/preuves/correction-mobile.txt) et la [copie du CSS avant correction](docs/preuves/style-avant.css.txt). Cette preuve seule ne démontre pas le rendu sur un téléphone réel.
+
+## Limites et questions ouvertes
+
+- Publication et liens du rendu en attente du dépôt GitHub. Les workflows fournis n’ont pas encore été exécutés sur GitHub ; Pages devra utiliser GitHub Actions comme source.
+- Les tests automatisés du moteur ne prouvent pas l’ergonomie, le parcours clavier complet ni le comportement tactile sur smartphone réel. Ces contrôles restent à faire.
+- Le code secret est caché dans l’interface pendant la partie ; ce jeu exécuté dans le navigateur ne cherche pas à empêcher l’inspection par les outils de développement.
+- L’historique est perdu au rechargement. Pas de sauvegarde ni de PWA.
+- Questions ouvertes : la présentation des couleurs est-elle assez lisible sans distinguer leurs teintes ? Le parcours clavier permet-il de jouer confortablement ?
+- API commune 0.2, essai du jeu d’un camarade et vidéo : réservés au jalon 2, hors du travail actuel.
+
+## Fichiers
+
+- `index.html` : interface française.
+- `style.css` : présentation et adaptation aux petits écrans.
+- `game.js` : règles et API du jeu.
+- `app.js` : interactions et affichage.
+- `game.test.js` : tests des règles.
+- `AGENTS.md` : consignes durables pour travailler avec Codex.
+- `.github/workflows/` : tests et publication Pages, à valider une fois le dépôt connecté.
+
+Documentation préparée à partir du [support S4 du 11 novembre](https://docs.google.com/presentation/d/1Yi_XaAN5B_8kT8FrJXQ6rpPXLBk-8riz5rpyb55_Weo/edit), du [guide README](https://docs.google.com/document/d/10FoB8lHkMB_Ys30Zcll1dFR_1TZ5nlNyhXRihrIIFjw/edit) et du [guide AGENTS](https://docs.google.com/document/d/1_epbOr-PrHMvFYcZaeLMDIjAmcKWd40ORtTX8Ia6_Sw/edit).
