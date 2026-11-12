@@ -1,10 +1,10 @@
 # Code secret
 
-Jeu solo de déduction inspiré du Mastermind, réalisé avec Codex pour le cours. Cette première version prépare uniquement le **jalon 1 du 20 novembre 2026 au soir** : le jeu est présent localement, la publication reste à terminer.
+Jeu solo de déduction inspiré du Mastermind, réalisé avec Codex pour le cours. Cette première version prépare uniquement le **jalon 1 du 20 novembre 2026 au soir**.
 
-- Dépôt GitHub : adresse à renseigner ; aucun dépôt distant configuré au moment de la vérification.
-- Application GitHub Pages : non publiée à ce stade.
-- Version de remise : tag `jalon-1` à créer après les vérifications locales ; il faudra aussi le pousser sur GitHub.
+- Dépôt : [amelieheg/code_secret](https://github.com/amelieheg/code_secret).
+- Application GitHub Pages : publication à vérifier ; l’adresse sera confirmée après le déploiement.
+- Version de remise : tag `jalon-1`.
 
 ## Règles et source
 
@@ -59,13 +59,17 @@ Les tests couvrent les répétitions, les propositions invalides, la victoire au
 
 Les résultats détaillés et l’environnement figurent dans la [preuve d’exécution](docs/preuves/tests-regles.md), régénérable par `node game.test.js --rapport`. Le code du moteur testé est celui du commit `3e2f7e0`, inchangé depuis ; les tests enrichis sont inclus dans la version de remise.
 
+Résultat de l’exécution locale : **22 tests réussis, aucun échec**, avec Node.js 24.22.1 ; les trois fichiers JavaScript passent également le contrôle `node --check`. Le test du calcul des indices compare les 1 679 616 paires possibles de codes à un calcul de référence indépendant.
+
+Dans Edge 157, les essais automatisés de l’interface confirment le refus d’une proposition de trois couleurs sans essai consommé, une victoire avec quatre couleurs exactes et le redémarrage. La légende est visible à 390 px et à 1280 px. Voir les [résultats du navigateur et les captures](docs/preuves/tests-navigateur.md). Le petit écran est simulé, pas un smartphone réel.
+
 ## Correction expliquée
 
-À une largeur de 760 px ou moins, la règle CSS `.guide,.little-note{display:none}` masquait aussi la légende des indices. L’attendu est de conserver les explications « Bien placée » et « Mal placée » sur petit écran. Le commit `a4438ce` retire `.guide` de cette règle. Voir la [preuve de code avant/après](docs/preuves/correction-mobile.txt) et la [copie du CSS avant correction](docs/preuves/style-avant.css.txt). Cette preuve seule ne démontre pas le rendu sur un téléphone réel.
+À une largeur de 760 px ou moins, la règle CSS `.guide,.little-note{display:none}` masquait aussi la légende des indices. L’attendu est de conserver les explications « Bien placée » et « Mal placée » sur petit écran. Le commit `a4438ce` retire `.guide` de cette règle. Voir la [preuve de code avant/après](docs/preuves/correction-mobile.txt), la [copie du CSS avant correction](docs/preuves/style-avant.css.txt) et les [captures de reproduction avant/après](docs/preuves/tests-navigateur.md). Le même essai à 390 px reproduit la légende masquée avec l’ancien CSS, puis visible avec le CSS corrigé, sans débordement horizontal. L’image « avant » est une reconstitution avec le CSS sauvegardé ; aucun essai sur téléphone réel n’est annoncé.
 
 ## Limites et questions ouvertes
 
-- Publication et liens du rendu en attente du dépôt GitHub. Les workflows fournis n’ont pas encore été exécutés sur GitHub ; Pages devra utiliser GitHub Actions comme source.
+- Publication GitHub Pages à vérifier. Les workflows fournis n’ont pas encore été exécutés sur GitHub ; Pages doit utiliser GitHub Actions comme source.
 - Les tests automatisés du moteur ne prouvent pas l’ergonomie, le parcours clavier complet ni le comportement tactile sur smartphone réel. Ces contrôles restent à faire.
 - Le code secret est caché dans l’interface pendant la partie ; ce jeu exécuté dans le navigateur ne cherche pas à empêcher l’inspection par les outils de développement.
 - L’historique est perdu au rechargement. Pas de sauvegarde ni de PWA.
